@@ -1,6 +1,5 @@
 # NO
 datasets.tar.gz
-*.csv
 *.xpt
 
 # Byte-compiled / optimized / DLL files
