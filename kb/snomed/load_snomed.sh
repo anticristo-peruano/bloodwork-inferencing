@@ -1,7 +1,5 @@
 #!/bin/sh
 
-perl -pi -e 's/\\\|/|/g; s/\\\././g' *.RRF
-
 psql -U postgres -p 5432 -f pgsql_tables.sql postgres
 echo "Tables loaded."
 

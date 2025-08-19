@@ -1,4 +1,4 @@
-set schema 'umls';
+set schema 'snomedct';
 
 CREATE INDEX description_conceptid_idx ON snomedct.description_f
   USING btree (conceptid COLLATE pg_catalog."default");
