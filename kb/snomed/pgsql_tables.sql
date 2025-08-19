@@ -3,7 +3,7 @@ create schema snomedct;
 set schema 'snomedct';
 
 
-CREATE TABLE concept_f(
+CREATE TABLE concept(
   	id 									varchar(18) not null,
   	effectivetime 						char(8) not null,
   	active 								char(1) not null,
@@ -13,7 +13,7 @@ CREATE TABLE concept_f(
 );
 
 
-CREATE TABLE description_f(
+CREATE TABLE description(
   	id 									varchar(18) not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -27,7 +27,7 @@ CREATE TABLE description_f(
 );
 
 
-CREATE TABLE textdefinition_f(
+CREATE TABLE textdefinition(
   	id 									varchar(18) not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -41,7 +41,7 @@ CREATE TABLE textdefinition_f(
 );
 
 
-CREATE TABLE relationship_f(
+CREATE TABLE relationship(
   	id 									varchar(18) not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -56,7 +56,7 @@ CREATE TABLE relationship_f(
 );
 
 
-CREATE TABLE stated_relationship_f(
+CREATE TABLE stated_relationship(
   	id 									varchar(18) not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -71,7 +71,7 @@ CREATE TABLE stated_relationship_f(
 );
 
 
-CREATE TABLE langrefset_f(
+CREATE TABLE langrefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -83,7 +83,7 @@ CREATE TABLE langrefset_f(
 );
 
 
-CREATE TABLE associationrefset_f(
+CREATE TABLE associationrefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -95,7 +95,7 @@ CREATE TABLE associationrefset_f(
 );
 
 
-CREATE TABLE attributevaluerefset_f(
+CREATE TABLE attributevaluerefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -107,7 +107,7 @@ CREATE TABLE attributevaluerefset_f(
 );
 
 
-CREATE TABLE simplerefset_f(
+CREATE TABLE simplerefset(
   	id 									uuid 	not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -118,7 +118,7 @@ CREATE TABLE simplerefset_f(
 );
 
 
-CREATE TABLE simplemaprefset_f(
+CREATE TABLE simplemaprefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -130,7 +130,7 @@ CREATE TABLE simplemaprefset_f(
 );
 
 
-CREATE TABLE extendedmaprefset_f(
+CREATE TABLE extendedmaprefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -148,7 +148,7 @@ CREATE TABLE extendedmaprefset_f(
 );
 
 
-CREATE TABLE MRCMModuleScoperefset_f(
+CREATE TABLE MRCMModuleScoperefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -160,7 +160,7 @@ CREATE TABLE MRCMModuleScoperefset_f(
 );
 
 
-CREATE TABLE RefsetDescriptorrefset_f(
+CREATE TABLE RefsetDescriptorrefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -174,7 +174,7 @@ CREATE TABLE RefsetDescriptorrefset_f(
 );
 
 
-CREATE TABLE DescriptionTyperefset_f(
+CREATE TABLE DescriptionTyperefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -187,7 +187,7 @@ CREATE TABLE DescriptionTyperefset_f(
 );
 
 
-CREATE TABLE MRCMAttributeDomain_f(
+CREATE TABLE MRCMAttributeDomain(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -204,7 +204,7 @@ CREATE TABLE MRCMAttributeDomain_f(
 );
 
 
-CREATE TABLE MRCMAttributeRangeRefset_f(
+CREATE TABLE MRCMAttributeRangeRefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -219,7 +219,7 @@ CREATE TABLE MRCMAttributeRangeRefset_f(
 );
 
 
-CREATE TABLE MRCMDomain_f(  
+CREATE TABLE MRCMDomain(  
 	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -237,7 +237,7 @@ CREATE TABLE MRCMDomain_f(
 );
 
 
-CREATE TABLE ModuleDependencyRefset_f(
+CREATE TABLE ModuleDependencyRefset(
   	id 									uuid 		not null,
   	effectivetime 						char(8) 	not null,
   	active 								char(1) 	not null,
@@ -250,7 +250,7 @@ CREATE TABLE ModuleDependencyRefset_f(
 );
 
 
-CREATE TABLE OWLExpressionRefset_f(
+CREATE TABLE OWLExpressionRefset(
 	id 									uuid 		not null,
 	effectivetime 						char(8) 	not null,
 	active 								char(1) 	not null,
