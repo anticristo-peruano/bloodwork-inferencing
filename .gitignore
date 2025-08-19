@@ -1,6 +1,14 @@
 # NO
 datasets.tar.gz
 *.xpt
+.vscode/
+
+# Datasets
+datasets/*/
+kb/loinc/*/
+kb/umls/*/
+kb/vsac/*/
+kb/snomed/*/
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
