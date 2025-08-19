@@ -16,7 +16,7 @@ BEGIN
         || quote_literal(FOLDER || '/' || type || '/Terminology/sct2_Description_' || type || '-en_' || RELEASE || '.txt') || 'WITH (FORMAT csv, HEADER true, ENCODING ''UTF8'' , DELIMITER ''	'', QUOTE E''\b'')';
 
 	EXECUTE 'COPY textdefinition ' || '(id, effectivetime, active, moduleid, conceptid, languagecode, typeid, term, casesignificanceid) FROM '
-        || quote_literal(FOLDER || '/' || type || '/Terminology/sct2_TextDefinition_' || type || '_' || RELEASE || '.txt') || 'WITH (FORMAT csv, HEADER true, ENCODING ''UTF8'', DELIMITER ''	'', QUOTE E''\b'')';
+        || quote_literal(FOLDER || '/' || type || '/Terminology/sct2_TextDefinition_' || type || '-en_' || RELEASE || '.txt') || 'WITH (FORMAT csv, HEADER true, ENCODING ''UTF8'', DELIMITER ''	'', QUOTE E''\b'')';
   
 	EXECUTE 'COPY relationship ' || '(id, effectivetime, active, moduleid, sourceid, destinationid, relationshipgroup, typeid,characteristictypeid, modifierid) FROM '
         || quote_literal(FOLDER || '/' || type || '/Terminology/sct2_Relationship_' || type || '_' || RELEASE || '.txt') || 'WITH (FORMAT csv, HEADER true, ENCODING ''UTF8'', DELIMITER ''	'')';
