@@ -7,7 +7,7 @@ DECLARE
 	RELEASE TEXT:= 'INT_20250801';
 	SUFFIX TEXT;
 BEGIN
-	SUFFIX := CASE type WHEN 'Full' THEN '_f' WHEN 'Delta' THEN '_d' WHEN 'Snapshot' THEN '_s' ELSE '' END
+	SUFFIX := CASE type WHEN 'Full' THEN '_f' WHEN 'Delta' THEN '_d' WHEN 'Snapshot' THEN '_s' ELSE '' END;
 	
   	EXECUTE 'COPY concept ' || '(id, effectivetime, active, moduleid, definitionstatusid) FROM '
         || quote_literal(FOLDER || '/' || type || '/Terminology/sct2_Concept_' || type || '_' || RELEASE || '.txt') || 'WITH (FORMAT csv, HEADER true, ENCODING ''UTF8'', DELIMITER ''	'')';
