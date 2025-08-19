@@ -1,0 +1,1 @@
+Granting privileges to the 'postgres' user for exploring and reading is required to populate the database.
