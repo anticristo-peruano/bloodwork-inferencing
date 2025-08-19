@@ -1,6 +1,6 @@
 #!/bin/sh
 
-perl -pi -e 's/\\\|/|/g; s/\\\././g' *.RRF
+perl -pi -e 's/\\\|/|/g; s/\\\././g' 2025AA/META/*.RRF
 
 psql -U postgres -p 5432 -f pgsql_tables.sql postgres
 echo "Tables loaded."

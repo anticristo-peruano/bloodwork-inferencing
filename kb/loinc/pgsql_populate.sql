@@ -39,3 +39,5 @@ BEGIN
 	COPY parentgroup FROM quote_literal(FOLDER || '/AccessoryFiles/GroupFile/ParentGroup.csv') CSV HEADER;
 	COPY parentgroupattributes FROM quote_literal(FOLDER || '/AccessoryFiles/GroupFile/ParentGroupAttributes.csv') CSV HEADER;
 END $$
+
+CHECKPOINT;
