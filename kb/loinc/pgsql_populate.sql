@@ -11,7 +11,6 @@ BEGIN
 	COPY linguisticvariants FROM quote_literal(FOLDER || '/AccessoryFiles/LinguisticVariants/LinguisticVariants.csv') CSV HEADER;
 	COPY loinc FROM quote_literal(FOLDER || '/LoincTable/Loinc.csv') CSV HEADER;
 	COPY loincanswerlistlink FROM quote_literal(FOLDER || '/AccessoryFiles/AnswerFile/LoincAnswerListLink.csv') CSV HEADER;
-	COPY loincanswerlistlink FROM quote_literal(FOLDER || '/AccessoryFiles/PanelsAndForms/LoincAnswerListLink.csv') CSV HEADER;
 	COPY loincchangesnapshot FROM quote_literal(FOLDER || '/AccessoryFiles/ChangeSnapshot/LoincChangeSnapshot.csv') CSV HEADER;
 	COPY loincgroup FROM quote_literal(FOLDER || '/AccessoryFiles/GroupFile/Group.csv') CSV HEADER;
 	COPY loincgroupattributes FROM quote_literal(FOLDER || '/AccessoryFiles/GroupFile/GroupAttributes.csv') CSV HEADER;
@@ -38,6 +37,6 @@ BEGIN
 	COPY grouploincterms FROM quote_literal(FOLDER || '/AccessoryFiles/GroupFile/GroupLoincTerms.csv') CSV HEADER;
 	COPY parentgroup FROM quote_literal(FOLDER || '/AccessoryFiles/GroupFile/ParentGroup.csv') CSV HEADER;
 	COPY parentgroupattributes FROM quote_literal(FOLDER || '/AccessoryFiles/GroupFile/ParentGroupAttributes.csv') CSV HEADER;
-END $$
+END $$;
 
 CHECKPOINT;

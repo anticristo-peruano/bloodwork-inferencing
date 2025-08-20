@@ -111,16 +111,6 @@ CREATE TABLE loincanswerlistlink (
 );
 
 
-CREATE TABLE loincanswerlistlink (
-    loincnumber                     varchar(255),
-    longcommonname                  varchar(255),
-    answerlistid                    varchar(255),
-    answerlistname                  varchar(255),
-    answerlistlinktype              varchar(255),
-    applicablecontext               text
-);
-
-
 CREATE TABLE loincchangesnapshot (
     versioneffective                varchar(255),
     loinc_num                       varchar(255),
