@@ -1,6 +1,6 @@
 DROP SCHEMA IF EXISTS loinc CASCADE;
 CREATE SCHEMA loinc;
-SET 'loinc';
+SET SCHEMA 'loinc';
 
 
 CREATE TABLE answerlist (
@@ -89,7 +89,6 @@ CREATE TABLE loinc (
     change_reason_public            text,
     common_test_rank                varchar(255),
     common_order_rank               varchar(255),
-    common_si_test_rank             varchar(255),
     hl7_attachment_structure        varchar(255),
     external_copyright_link         varchar(255),
     paneltype                       varchar(255),
@@ -277,7 +276,8 @@ CREATE TABLE panelsandforms (
     answercardinality               varchar(255),
     answerlistidoverride            varchar(255),
     answerlisttypeoverride          varchar(255),
-    external_copyright_notice       text
+    external_copyright_notice       text,
+    additional_copyright            text
 );
 
 
