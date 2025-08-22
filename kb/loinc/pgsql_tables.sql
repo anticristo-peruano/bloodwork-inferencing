@@ -41,21 +41,6 @@ CREATE TABLE documentontology (
 );
 
 
-CREATE TABLE imagingdocumentcodes (
-    loinc_num                       varchar(255),
-    long_common_name                varchar(255)
-);
-
-
-CREATE TABLE linguisticvariants (
-    id                              varchar(255),
-    iso_language                    varchar(255),
-    iso_country                     varchar(255),
-    language_name                   varchar(255),
-    producer                        varchar(255)
-);
-
-
 CREATE TABLE loinc (
     loinc_num                       varchar(255),
     component                       varchar(255),
@@ -100,7 +85,7 @@ CREATE TABLE loinc (
 );
 
 
-CREATE TABLE loincanswerlistlink (
+CREATE TABLE answerlistlink (
     loincnumber                     varchar(255),
     longcommonname                  varchar(255),
     answerlistid                    varchar(255),
@@ -110,17 +95,7 @@ CREATE TABLE loincanswerlistlink (
 );
 
 
-CREATE TABLE loincchangesnapshot (
-    versioneffective                varchar(255),
-    loinc_num                       varchar(255),
-    property                        varchar(255),
-    valueprior                      varchar(255),
-    valuecurrent                    varchar(255),
-    changereason                    text
-);
-
-
-CREATE TABLE loincgroup (
+CREATE TABLE lgroup (
     parentloincgroupid              varchar(255),
     loincgroupid                    varchar(255),
     loincgroup                      varchar(255),
@@ -130,7 +105,7 @@ CREATE TABLE loincgroup (
 );
 
 
-CREATE TABLE loincgroupattributes (
+CREATE TABLE groupattributes (
     parentloincgroupid              varchar(255),
     loincgroupid                    varchar(255),
     type                            varchar(255),
@@ -138,7 +113,7 @@ CREATE TABLE loincgroupattributes (
 );
 
 
-CREATE TABLE loincgrouploincterms (
+CREATE TABLE grouploincterms (
     category                        varchar(255),
     loincgroupid                    varchar(255),
     archetype                       varchar(255),
@@ -147,7 +122,7 @@ CREATE TABLE loincgrouploincterms (
 );
 
 
-CREATE TABLE loincieeemedicaldevicecodemappingtable (
+CREATE TABLE ieeemedicaldevicecodemappingtable (
     loinc_num                       varchar(255),
     loinc_long_common_name          varchar(255),
     ieee_cf_code10                  varchar(255),
@@ -156,21 +131,21 @@ CREATE TABLE loincieeemedicaldevicecodemappingtable (
 );
 
 
-CREATE TABLE loincparentgroup (
+CREATE TABLE parentgroup (
     parentloincgroupid              varchar(255),
     parentloincgroup                varchar(255),
     status                          varchar(255)
 );
 
 
-CREATE TABLE loincparentgroupattributes (
+CREATE TABLE parentgroupattributes (
     parentloincgroupid              varchar(255),
     type                            varchar(255),
     value                           text
 );
 
 
-CREATE TABLE loincpartlink_primary (
+CREATE TABLE partlink_primary (
     loincnumber                     varchar(255),
     longcommonname                  varchar(255),
     partnumber                      varchar(255),
@@ -182,7 +157,7 @@ CREATE TABLE loincpartlink_primary (
 );
 
 
-CREATE TABLE loincpartlink_supplementary (
+CREATE TABLE partlink_supplementary (
     loincnumber                     varchar(255),
     longcommonname                  varchar(255),
     partnumber                      varchar(255),
@@ -194,40 +169,7 @@ CREATE TABLE loincpartlink_supplementary (
 );
 
 
-CREATE TABLE loincrsnaradiologyplaybook (
-    loincnumber                     varchar(255),
-    longcommonname                  varchar(255),
-    partnumber                      varchar(255),
-    parttypename                    varchar(255),
-    partname                        varchar(255),
-    partsequenceorder               varchar(255),
-    rid                             varchar(255),
-    preferredname                   varchar(255),
-    rpid                            varchar(255),
-    longname                        varchar(255)
-);
-
-
-CREATE TABLE loinctablecore (
-    loinc_num                       varchar(255),
-    component                       varchar(255),
-    property                        varchar(255),
-    time_aspct                      varchar(255),
-    system                          varchar(255),
-    scale_typ                       varchar(255),
-    method_typ                      varchar(255),
-    class                           varchar(255),
-    classtype                       varchar(255),
-    long_common_name                varchar(255),
-    shortname                       varchar(255),
-    external_copyright_notice       text,
-    status                          varchar(255),
-    versionfirstreleased            varchar(255),
-    versionlastchanged              varchar(255)
-);
-
-
-CREATE TABLE loincuniversallabordersvalueset (
+CREATE TABLE universallabordersvalueset (
     loinc_num                       varchar(255),
     long_common_name                varchar(255),
     order_obs                       varchar(255)
@@ -235,13 +177,6 @@ CREATE TABLE loincuniversallabordersvalueset (
 
 
 CREATE TABLE mapto (
-    loinc                           varchar(255),
-    map_to                          varchar(255),
-    comment                         varchar(255)
-);
-
-
-CREATE TABLE coremapto (
     loinc                           varchar(255),
     map_to                          varchar(255),
     comment                         varchar(255)
@@ -290,16 +225,6 @@ CREATE TABLE part (
 );
 
 
-CREATE TABLE partchangesnapshot (
-    versioneffective                varchar(255),
-    partnumber                      varchar(255),
-    property                        varchar(255),
-    valueprior                      varchar(255),
-    valuecurrent                    varchar(255),
-    changereason                    varchar(255)
-);
-
-
 CREATE TABLE partrelatedcodemapping (
     partnumber                      varchar(255),
     partname                        varchar(255),
@@ -324,64 +249,10 @@ CREATE TABLE sourceorganization (
 );
 
 
-CREATE TABLE updates (
-    rectype                         varchar(255),
-    loinc_num                       varchar(255),
-    component                       varchar(255),
-    property                        varchar(255),
-    time_aspct                      varchar(255),
-    system                          varchar(255),
-    scale_typ                       varchar(255),
-    method_typ                      varchar(255),
-    class                           varchar(255)
-);
-
-
 CREATE TABLE componenthierarchybysystem (
     path_to_root                    varchar(255),
     sequence                        varchar(255),
     immediate_parent                varchar(255),
     code                            varchar(255),
     code_text                       varchar(255)
-);
-
-
-CREATE TABLE loinc_group (
-    parentgroupid		            varchar(255),
-    groupid		                    varchar(255),
-    loinc_group		                varchar(255),
-    archetype		                varchar(255),
-    status		                    varchar(255),
-    versionfirstreleased		    varchar(255)
-);
-
-
-CREATE TABLE groupattributes (
-    parentgroupid		            varchar(255),
-    groupid		                    varchar(255),
-    type		                    varchar(255),
-    value		                    text
-);
-
-
-CREATE TABLE grouploincterms (
-    category		                varchar(255),
-    groupid		                    varchar(255),
-    archetype		                varchar(255),
-    loincnumber		                varchar(255),
-    longcommonname		            text
-);
-
-
-CREATE TABLE parentgroup (
-    parentgroupid		            varchar(255),
-    parentgroup		                varchar(255),
-    status		                    varchar(255)
-);
-
-
-CREATE TABLE parentgroupattributes (
-    parentgroupid		            varchar(255),
-    type		                    varchar(255),
-    value		                    text
 );
