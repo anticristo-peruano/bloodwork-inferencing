@@ -27,13 +27,13 @@ CREATE TABLE answerlist (
 
 
 CREATE TABLE consumername (
-    loincnumber                     varchar(255),
+    loinc_num                     varchar(255),
     consumername                    varchar(255)
 );
 
 
 CREATE TABLE documentontology (
-    loincnumber                     varchar(255),
+    loinc_num                     varchar(255),
     partnumber                      varchar(255),
     parttypename                    varchar(255),
     partsequenceorder               varchar(255),
@@ -86,7 +86,7 @@ CREATE TABLE loinc (
 
 
 CREATE TABLE answerlistlink (
-    loincnumber                     varchar(255),
+    loinc_num                     varchar(255),
     longcommonname                  varchar(255),
     answerlistid                    varchar(255),
     answerlistname                  varchar(255),
@@ -117,7 +117,7 @@ CREATE TABLE grouploincterms (
     category                        varchar(255),
     loincgroupid                    varchar(255),
     archetype                       varchar(255),
-    loincnumber                     varchar(255),
+    loinc_num                     varchar(255),
     longcommonname                  varchar(255)
 );
 
@@ -146,7 +146,7 @@ CREATE TABLE parentgroupattributes (
 
 
 CREATE TABLE partlink_primary (
-    loincnumber                     varchar(255),
+    loinc_num                     varchar(255),
     longcommonname                  varchar(255),
     partnumber                      varchar(255),
     partname                        varchar(255),
@@ -158,7 +158,7 @@ CREATE TABLE partlink_primary (
 
 
 CREATE TABLE partlink_supplementary (
-    loincnumber                     varchar(255),
+    loinc_num                     varchar(255),
     longcommonname                  varchar(255),
     partnumber                      varchar(255),
     partname                        varchar(255),
@@ -189,7 +189,7 @@ CREATE TABLE panelsandforms (
     parentname                      varchar(255),
     id                              varchar(255),
     sequence                        varchar(255),
-    loinc                           varchar(255),
+    loinc_num                           varchar(255),
     loincname                       varchar(255),
     displaynameforform              varchar(255),
     observationrequiredinpanel      varchar(255),
