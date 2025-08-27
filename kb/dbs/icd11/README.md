@@ -1,0 +1,1 @@
+Dominik's work (thanks, king): https://github.com/dominikgubo/ai-disease-likelyhood-assesment-depending-on-med-params
