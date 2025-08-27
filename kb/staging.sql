@@ -51,6 +51,10 @@ WHERE s.lat IN ('ENG');
 
 ---- SNOMED UNIVERSE
 -- 3a) General parent-child relationship
+CREATE INDEX IF NOT EXISTS rel_isa_idx
+ON snomedct.relationship (destinationid, sourceid)
+WHERE active='1' AND typeid='116680003';
+
 DROP MATERIALIZED VIEW IF EXISTS snomedct.isa_closure CASCADE;
 WITH RECURSIVE cte AS (
   SELECT sourceid AS child, destinationid AS parent
@@ -64,8 +68,9 @@ WITH RECURSIVE cte AS (
 )
 SELECT DISTINCT child, parent FROM cte;
 
-CREATE INDEX ON snomedct.isa_closure (child);
-CREATE INDEX ON snomedct.isa_closure (parent);
+CREATE UNIQUE INDEX IF NOT EXISTS isa_closure_uq ON snomedct.isa_closure (child, parent);
+CREATE INDEX        IF NOT EXISTS isa_child_idx  ON snomedct.isa_closure (child);
+CREATE INDEX        IF NOT EXISTS isa_parent_idx ON snomedct.isa_closure (parent);
 
 
 -- 3b) Sets
@@ -110,8 +115,8 @@ CREATE MATERIALIZED VIEW kg.find2obs AS
 SELECT r.sourceid AS finding_id, r.destinationid AS observable_id, r.id AS relid
 FROM snomedct.relationship r
 WHERE r.active=1 AND r.typeid='363714003'  -- interprets
-  AND r.sourceid IN (SELECT sctid FROM kg.sct_finding)
-  AND r.destinationid IN (SELECT sctid FROM kg.sct_observable);
+AND r.sourceid IN (SELECT sctid FROM kg.sct_finding)
+AND r.destinationid IN (SELECT sctid FROM kg.sct_observable);
 
 
 DROP MATERIALIZED VIEW IF EXISTS kg.dis2find CASCADE;
@@ -119,8 +124,6 @@ CREATE MATERIALIZED VIEW kg.dis2find AS
 SELECT r.sourceid AS disease_id, r.destinationid AS finding_id, r.typeid, r.id AS relid
 FROM snomedct.relationship r
 WHERE r.active=1
-  AND r.sourceid IN (SELECT sctid FROM kg.sct_disease)
-  AND r.destinationid IN (SELECT sctid FROM kg.sct_finding)
-  AND r.typeid IN ('363705008',        -- has definitional manifestation
-                   '47429007',         -- associated with (check your RF2 mapping table for actual typeId)
-                   '42752001');        -- due to (ditto, verify locally)
+AND r.sourceid IN (SELECT sctid FROM kg.sct_disease)
+AND r.destinationid IN (SELECT sctid FROM kg.sct_finding)
+AND r.typeid IN ('363705008','47429007','42752001');        

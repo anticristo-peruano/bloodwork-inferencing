@@ -1,5 +1,5 @@
-DROP MATERIALIZED VIEW IF EXISTS kg.e2e_test_to_disease CASCADE;
-CREATE MATERIALIZED VIEW kg.e2e_test_to_disease AS
+DROP MATERIALIZED VIEW IF EXISTS kg.e2e_test2dis CASCADE;
+CREATE MATERIALIZED VIEW kg.e2e_test2dis AS
 SELECT
   t.loinc_num                      AS test_loinc,
   t.long_common_name               AS test_name,
@@ -52,8 +52,8 @@ LEFT JOIN LATERAL (
 ) dd ON TRUE;
 
 
-DROP MATERIALIZED VIEW IF EXISTS kg.e2e_analyte_to_disease CASCADE;
-CREATE MATERIALIZED VIEW kg.e2e_analyte_to_disease AS
+DROP MATERIALIZED VIEW IF EXISTS kg.e2e_an2dis CASCADE;
+CREATE MATERIALIZED VIEW kg.e2e_an2dis AS
 SELECT
   a.partnumber                    AS analyte_id,
   a.partname                      AS analyte_name,
@@ -109,9 +109,9 @@ LEFT JOIN LATERAL (
 ) dd ON TRUE;
 
 
-SELECT COUNT(*) FROM kg.e2e_test_to_disease;
-SELECT COUNT(*) FROM kg.e2e_analyte_to_disease;
+SELECT COUNT(*) FROM kg.e2e_test2dis;
+SELECT COUNT(*) FROM kg.e2e_an2dis;
 
-SELECT * FROM kg.e2e_test_to_disease
+SELECT * FROM kg.e2e_test2dis
 ORDER BY test_loinc, disease_term
 LIMIT 20;
