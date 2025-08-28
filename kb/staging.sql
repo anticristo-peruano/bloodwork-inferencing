@@ -1,6 +1,11 @@
 CREATE SCHEMA IF NOT EXISTS kg AUTHORIZATION postgres;
 SET search_path TO kg, loinc, snomedct, umls;
 
+/*
+Staging of data previous to bridge it to Neo4j.
+Current waiting time: 20 minutes.
+*/
+
 ---- LOINC UNIVERSE
 -- 1a) Active set of lab observations
 DROP MATERIALIZED VIEW IF EXISTS kg.lnc_test CASCADE;
@@ -55,18 +60,21 @@ CREATE INDEX IF NOT EXISTS rel_isa_idx
 ON snomedct.relationship (destinationid, sourceid)
 WHERE active='1' AND typeid='116680003';
 
+
 DROP MATERIALIZED VIEW IF EXISTS snomedct.isa_closure CASCADE;
+CREATE MATERIALIZED VIEW snomedct.isa_closure AS
 WITH RECURSIVE cte AS (
   SELECT sourceid AS child, destinationid AS parent
   FROM snomedct.relationship
   WHERE active = '1' AND typeid = '116680003'
-  UNION ALL
+  UNION
   SELECT r.sourceid, cte.parent
   FROM snomedct.relationship r
   JOIN cte ON r.destinationid = cte.child
   WHERE r.active = '1' AND r.typeid = '116680003'
 )
-SELECT DISTINCT child, parent FROM cte;
+SELECT child, parent FROM cte;
+
 
 CREATE UNIQUE INDEX IF NOT EXISTS isa_closure_uq ON snomedct.isa_closure (child, parent);
 CREATE INDEX        IF NOT EXISTS isa_child_idx  ON snomedct.isa_closure (child);
@@ -99,7 +107,7 @@ WHERE ic.parent = '64572001' AND c.active = '1';   -- Disease
 
 
 ---- FINAL MAPPINGS
--- 
+-- 4a) LOINC + SNOMED
 DROP MATERIALIZED VIEW IF EXISTS kg.lnc_sct_obs CASCADE;
 CREATE MATERIALIZED VIEW kg.lnc_sct_obs AS
 SELECT DISTINCT lu.loinc_num, sn.code::text AS sctid, sn.str AS sct_term
@@ -110,20 +118,22 @@ JOIN kg.sct_observable obs ON obs.sctid = sn.code::text;
 -- Not every LOINC shares CUI with SNOMED. Literature gap.
 
 
+-- 4b) Findings to observations
 DROP MATERIALIZED VIEW IF EXISTS kg.find2obs CASCADE;
 CREATE MATERIALIZED VIEW kg.find2obs AS
 SELECT r.sourceid AS finding_id, r.destinationid AS observable_id, r.id AS relid
 FROM snomedct.relationship r
-WHERE r.active=1 AND r.typeid='363714003'  -- interprets
-AND r.sourceid IN (SELECT sctid FROM kg.sct_finding)
-AND r.destinationid IN (SELECT sctid FROM kg.sct_observable);
+JOIN kg.sct_finding    f ON f.sctid = r.sourceid
+JOIN kg.sct_observable o ON o.sctid = r.destinationid
+WHERE r.active='1' AND r.typeid='363714003';  -- interprets
 
 
+-- 4c) Diseases to findings
 DROP MATERIALIZED VIEW IF EXISTS kg.dis2find CASCADE;
 CREATE MATERIALIZED VIEW kg.dis2find AS
 SELECT r.sourceid AS disease_id, r.destinationid AS finding_id, r.typeid, r.id AS relid
 FROM snomedct.relationship r
-WHERE r.active=1
-AND r.sourceid IN (SELECT sctid FROM kg.sct_disease)
-AND r.destinationid IN (SELECT sctid FROM kg.sct_finding)
+JOIN kg.sct_disease d ON d.sctid = r.sourceid
+JOIN kg.sct_finding f ON f.sctid = r.destinationid
+WHERE r.active='1'
 AND r.typeid IN ('363705008','47429007','42752001');        
