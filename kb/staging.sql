@@ -18,20 +18,6 @@ AND status = 'ACTIVE'
 AND (class ILIKE 'HEM%' OR class ILIKE 'COAG%' OR long_common_name ILIKE '%hematolog%');
 
 
--- 1b) Observation analytes
-DROP MATERIALIZED VIEW IF EXISTS kg.lnc_analyte CASCADE;
-CREATE MATERIALIZED VIEW kg.lnc_analyte AS
-SELECT t.loinc_num, p.partnumber, p.partname
-FROM kg.lnc_test t
-JOIN loinc.partlink_primary plp on t.loinc_num = plp.loinc_num
-JOIN loinc.partlink_supplementary pls on t.loinc_num = pls.loinc_num
-JOIN loinc.part p on p.partname = pls.partname
-WHERE pls.linktypename = 'DetailedModel' AND pls.parttypename = 'COMPONENT';
-
-
---SELECT * FROM kg.lnc_test LIMIT 20;
---SELECT * FROM kg.lnc_analyte LIMIT 20;
-
 ---- UMLS UNIVERSE
 -- 2a) Intermapping LOINC and UMLS
 DROP MATERIALIZED VIEW IF EXISTS kg.lnc_umls CASCADE;
@@ -51,9 +37,6 @@ JOIN umls.mrconso s ON s.cui = lu.cui
 WHERE s.lat IN ('ENG');
 
 
---SELECT * FROM kg.lnc_umls LIMIT 20;
---SELECT * FROM kg.analyte_synonyms LIMIT 20;
-
 ---- SNOMED UNIVERSE
 -- 3a) General parent-child relationship
 CREATE INDEX IF NOT EXISTS rel_isa_idx
@@ -64,7 +47,7 @@ WHERE active='1' AND typeid='116680003';
 DROP MATERIALIZED VIEW IF EXISTS snomedct.isa_closure CASCADE;
 CREATE MATERIALIZED VIEW snomedct.isa_closure AS
 WITH RECURSIVE cte AS (
-  SELECT sourceid AS child, destinationid AS parent
+  SELECT sourceid AS child, destinationid AS parent, 
   FROM snomedct.relationship
   WHERE active = '1' AND typeid = '116680003'
   UNION
@@ -84,25 +67,31 @@ CREATE INDEX        IF NOT EXISTS isa_parent_idx ON snomedct.isa_closure (parent
 -- 3b) Sets
 DROP MATERIALIZED VIEW IF EXISTS kg.sct_observable CASCADE;
 CREATE MATERIALIZED VIEW kg.sct_observable AS
-SELECT c.id AS sctid
+SELECT c.id AS sctid, des.term as term, tex.term as def
 FROM snomedct.concept c
 JOIN snomedct.isa_closure ic ON ic.child = c.id
+LEFT JOIN snomedct.description des ON c.id = des.id
+LEFT JOIN snomedct.textdefinition tex ON c.di = tex.id
 WHERE ic.parent = '363787002' AND c.active = '1';  -- Observable entity
 
 
 DROP MATERIALIZED VIEW IF EXISTS kg.sct_finding CASCADE;
 CREATE MATERIALIZED VIEW kg.sct_finding AS
-SELECT c.id AS sctid
+SELECT c.id AS sctid, des.term as term, tex.term as def
 FROM snomedct.concept c
 JOIN snomedct.isa_closure ic ON ic.child = c.id
+LEFT JOIN snomedct.description des ON c.id = des.id
+LEFT JOIN snomedct.textdefinition tex ON c.di = tex.id
 WHERE ic.parent = '404684003' AND c.active = '1';  -- Clinical finding
 
 
 DROP MATERIALIZED VIEW IF EXISTS kg.sct_disease CASCADE;
 CREATE MATERIALIZED VIEW kg.sct_disease AS
-SELECT c.id AS sctid
+SELECT c.id AS sctid, des.term as term, tex.term as def
 FROM snomedct.concept c
 JOIN snomedct.isa_closure ic ON ic.child = c.id
+LEFT JOIN snomedct.description des ON c.id = des.id
+LEFT JOIN snomedct.textdefinition tex ON c.di = tex.id
 WHERE ic.parent = '64572001' AND c.active = '1';   -- Disease
 
 

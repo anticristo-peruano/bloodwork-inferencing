@@ -5,10 +5,10 @@ datasets.tar.gz
 
 # Datasets
 datasets/*/
-kb/loinc/*/
-kb/umls/*/
-kb/vsac/*/
-kb/snomed/*/
+kb/dbs/loinc/*/
+kb/dbs/umls/*/
+kb/dbs/vsac/*/
+kb/dbs/snomed/*/
 *.zip
 
 # Byte-compiled / optimized / DLL files
