@@ -1,10 +1,10 @@
-CREATE SCHEMA IF NOT EXISTS kg AUTHORIZATION postgres;
-SET search_path TO kg, loinc, snomedct, umls;
-
 /*
 Staging of data previous to bridge it to Neo4j.
-Current waiting time: 20 minutes.
+Current waiting time: 9 minutes.
 */
+
+CREATE SCHEMA IF NOT EXISTS kg AUTHORIZATION postgres;
+SET search_path TO kg, loinc, snomedct, umls;
 
 ---- LOINC UNIVERSE
 -- 1a) Active set of lab observations
