@@ -12,3 +12,7 @@ The explorations and optimized mapping approaches presented in the SQL codes wou
 [5] Talapova, P., Korchmar, E., Vakhitov, T. & Davydov, A. (2018). The hierarchical crosswalk between LOINC and SNOMED CT Laboratory Procedures.
 
 [6] Mary, M., Soualmia, L., & Gansel, X. (2017). Usability and Improvement of Existing Alignments: The LOINC-SNOMED CT Case Study. Springer International Publishing. https://doi.org/10.1007/978-3-319-58694-6_19
+
+[7] Stoilos, G., Stamau, G., Kollias, S. (2005). A String Metric for Ontology Alignment. ISWC 2005, 4th International Semantic Web Conference. https://doi.org/10.1007/11574620_45
+
+[8] Winkler, W. (1999). The state record linkage and current research problems. Technical report, Statistics of Income Division, Internal Revenue Service Publication.
