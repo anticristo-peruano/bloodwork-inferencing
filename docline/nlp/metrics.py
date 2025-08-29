@@ -1,25 +1,8 @@
-import re, unidecode, difflib
-from nltk.corpus import stopwords
-from nltk.stem import SnowballStemmer
+import difflib
 import numpy as np
 from scipy.optimize import linear_sum_assignment
+from .preprocess import clean_tokenizer
 
-SW = stopwords.words('english')
-STEMMER = SnowballStemmer('english')
-
-def clean_tokenizer(text):
-    return [
-        STEMMER.stem(
-            unidecode.unidecode(w)
-            ) for w in re.findall(
-                r'[a-z]+',re.sub(
-                    r'[^a-z ]',
-                    r'',
-                    text.lower()             
-                    )
-                ) 
-        if w not in SW
-        ]
 
 def common_substring(a,b,threshold):
     la, lb = list(a), list(b)
@@ -46,7 +29,7 @@ def stoilos_similarity(s1,s2,p = 0.6,substring_threshold = 2,prefix_scale = 0.1,
     lcs = sum(L for _,_,L in common_substring(s1,s2,threshold=substring_threshold))
     comm = 2.0 * lcs / (len(s1) + len(s2))
 
-    u1, u2 = max(0.0, (len(s1) - lcs) / len(s1), max(0.0, (len(s2) - lcs) / len(s2)))
+    u1, u2 = max(0.0, (len(s1) - lcs) / len(s1)), max(0.0, (len(s2) - lcs) / len(s2))
     denom = p + (1.0 - p) * (u1 + u2 - u1 * u2)
     diff = 0.0 if denom == 0 else (u1 * u2)/denom
 
@@ -102,7 +85,7 @@ def combined_similarity(s1,s2,p = 0.7,sim_thres = 0.8):
     return -1.0 if sim < -1.0 else (1.0 if sim > 1.0 else sim)
 
 def confidence_score(s1,s2,p = 0.7, floor = 0.15, ceil = 1.0, sim_thres = 0.8):
-    sim = combined_similarity(s1, s2, p=p, sim_threshold=sim_thres)
+    sim = combined_similarity(s1, s2, p=p, sim_thres=sim_thres)
     if ceil <= floor:
         return int(round(1000 * sim))
     scaled = (sim - floor) / (ceil - floor)
