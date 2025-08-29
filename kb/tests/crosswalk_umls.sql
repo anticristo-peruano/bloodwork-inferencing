@@ -44,10 +44,10 @@ WITH parts AS (
   LEFT JOIN loinc.partlink_primary pll ON pll.loinc_num = l.loinc_num
   JOIN loinc.part pt ON pt.partnumber = pll.partnumber
   WHERE pt.status = 'ACTIVE'
-  GROUP BY l.loinc_num;
+  GROUP BY l.loinc_num
 )
 SELECT
-  par.loinc_num
+  par.loinc_num,
   par.lp_component, par.lp_system, par.lp_scale, par.lp_time,
   cpt.cui AS comp_cui,
   sys.cui AS sys_cui,
@@ -122,10 +122,83 @@ SELECT
   uz.cui AS scl_cui,
   ut.cui AS tim_cui
 FROM axes a
-LEFT JOIN kg.umls_sct uc ON uc.sctid = a.comp_id
-LEFT JOIN kg.umls_sct us ON us.sctid = a.system_id
-LEFT JOIN kg.umls_sct uz ON uz.sctid = a.scale_id
-LEFT JOIN kg.umls_sct ut ON ut.sctid = a.time_id;
+LEFT JOIN test.umls_sct uc ON uc.sctid = a.comp_id
+LEFT JOIN test.umls_sct us ON us.sctid = a.system_id
+LEFT JOIN test.umls_sct uz ON uz.sctid = a.scale_id
+LEFT JOIN test.umls_sct ut ON ut.sctid = a.time_id;
+CREATE INDEX IF NOT EXISTS sct_axes_idx ON test.sct_axes(sctid);
 
-CREATE INDEX IF NOT EXISTS sct_axes_idx ON kg.sct_axes(sctid);
 
+
+
+-- 4) Pairing testings
+-- Lvl 3: comp + sys + scale
+DROP MATERIALIZED VIEW IF EXISTS test.lnc2sct_lvl3 CASCADE;
+CREATE MATERIALIZED VIEW test.lnc2sct_lvl3 AS
+SELECT l.loinc_num, s.sctid, 3 AS match_level
+FROM test.lnc_axes l
+JOIN test.sct_axes s ON s.comp_cui = l.comp_cui
+WHERE l.sys_cui IS NOT NULL AND s.sys_cui = l.sys_cui
+  AND l.scl_cui IS NOT NULL AND s.scl_cui = l.scl_cui;
+
+-- Lvl 2a: comp + sys
+DROP MATERIALIZED VIEW IF EXISTS test.lnc2sct_lvl2a CASCADE;
+CREATE MATERIALIZED VIEW test.lnc2sct_lvl2a AS
+SELECT l.loinc_num, s.sctid, 2 AS match_level
+FROM test.lnc_axes l
+JOIN test.sct_axes s ON s.comp_cui = l.comp_cui
+WHERE l.sys_cui IS NOT NULL AND s.sys_cui = l.sys_cui;
+
+-- Lvl 2b: comp + scale
+DROP MATERIALIZED VIEW IF EXISTS test.lnc2sct_lvl2b CASCADE;
+CREATE MATERIALIZED VIEW test.lnc2sct_lvl2b AS
+SELECT l.loinc_num, s.sctid, 2 AS match_level
+FROM test.lnc_axes l
+JOIN test.sct_axes s ON s.comp_cui = l.comp_cui
+WHERE l.scl_cui IS NOT NULL AND s.scl_cui = l.scl_cui;
+
+-- Lvl 1: only comp
+DROP MATERIALIZED VIEW IF EXISTS test.lnc2sct_lvl1 CASCADE;
+CREATE MATERIALIZED VIEW test.lnc2sct_lvl1 AS
+SELECT l.loinc_num, s.sctid, 1 AS match_level
+FROM test.lnc_axes l
+JOIN test.sct_axes s ON s.comp_cui = l.comp_cui;
+
+
+DROP MATERIALIZED VIEW IF EXISTS test.lnc2sct_relmap CASCADE;
+CREATE MATERIALIZED VIEW test.lnc2sct_relmap AS
+WITH all_levels AS (
+  SELECT * FROM test.lnc2sct_lvl3
+  UNION ALL
+  SELECT * FROM test.lnc2sct_lvl2a
+  UNION ALL
+  SELECT * FROM test.lnc2sct_lvl2b
+  UNION ALL
+  SELECT * FROM test.lnc2sct_lvl1
+),
+ranked AS (
+  SELECT
+    loinc_num, sctid, MAX(match_level) AS match_level
+  FROM all_levels
+  GROUP BY loinc_num, sctid
+),
+best AS (
+  SELECT
+    loinc_num, sctid, match_level,
+    ROW_NUMBER() OVER (PARTITION BY loinc_num ORDER BY match_level DESC, sctid) AS rnk
+  FROM ranked
+)
+SELECT loinc_num, sctid, match_level
+FROM best
+WHERE rnk = 1;
+CREATE INDEX IF NOT EXISTS l2s_loinc_idx ON test.lnc2sct_relmap(loinc_num);
+CREATE INDEX IF NOT EXISTS l2s_sct_idx   ON test.lnc2sct_relmap(sctid);
+
+
+
+
+-- 5) Review tables
+SELECT match_level, COUNT(*) AS pairs 
+FROM test.lnc2sct_relmap 
+GROUP BY 1 
+ORDER BY 1 DESC;
