@@ -81,7 +81,7 @@ rel AS (
     AND r.typeid IN (
       '246093002',   -- component
       '116686009',   -- has_specimen
-      '370133003',   -- specimen_substance  (se usa en el salto 2)
+      '370133003',   -- specimen_substance
       '405813007',   -- proc_site_direct
       '370132008',   -- scale_type
       '370134009'    -- time_aspect
