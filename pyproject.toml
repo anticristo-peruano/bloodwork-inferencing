@@ -1,0 +1,16 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "docline"
+version = "0.0.1"
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = [
+   "License :: OSI Approved :: Common Public License"
+]
+
+[project.urls]
+Homepage = "https://github.com/anticristo-peruano/bloodwork-inferencing"
+Issues = "https://github.com/anticristo-peruano/bloodwork-inferencing"
