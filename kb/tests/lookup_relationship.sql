@@ -10,7 +10,7 @@ WHERE active='1' AND typeid='116680003';
 DROP MATERIALIZED VIEW IF EXISTS snomedct.isa_closure CASCADE;
 CREATE MATERIALIZED VIEW snomedct.isa_closure AS
 WITH RECURSIVE cte AS (
-  SELECT sourceid AS child, destinationid AS parent, 
+  SELECT sourceid AS child, destinationid AS parent 
   FROM snomedct.relationship
   WHERE active = '1' AND typeid = '116680003'
   UNION
