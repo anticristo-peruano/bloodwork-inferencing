@@ -21,12 +21,12 @@ def common_substring(a,b,threshold):
             lb[j + k] = None
     return results
 
-def stoilos_similarity(s1,s2,p = 0.6,substring_threshold = 2,prefix_scale = 0.1,max_prefix = 4):
+def stoilos_similarity(s1,s2,p = 0.6,subs_thres = 2,prefix_scale = 0.1,max_prefix = 4):
     s1, s2 = ''.join(clean_tokenizer(s1)), ''.join(clean_tokenizer(s2))
     if not s1 and not s2: return 1.0
     if not s1 or not s2: return 0.0
 
-    lcs = sum(L for _,_,L in common_substring(s1,s2,threshold=substring_threshold))
+    lcs = sum(L for _,_,L in common_substring(s1,s2,threshold=subs_thres))
     comm = 2.0 * lcs / (len(s1) + len(s2))
 
     u1, u2 = max(0.0, (len(s1) - lcs) / len(s1)), max(0.0, (len(s2) - lcs) / len(s2))
